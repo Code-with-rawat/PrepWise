@@ -1,5 +1,5 @@
 const express = require('express');
-const authMiddleware = require('../Middleware/auth.middleware.js');
+const authMiddleware = require('../middleware/auth.middleware.js');
 const { generateInterviewReporting,getInterviewReportByIdController, getAllInterviewReportsController , generateResumePdfController} = require('../Controllers/interview.controller.js');
 const upload = require('../middleware/file.middleware.js');
 
