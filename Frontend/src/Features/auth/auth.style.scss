@@ -1,0 +1,315 @@
+$color-ink:         #10151F;
+$color-ink-soft:    #161D2B;
+$color-ink-glow:    #1E2840;
+
+$color-card:        #FFFFFF;
+
+$color-amber:        #E8A23D;
+$color-amber-dark:   #C9842A;
+$color-amber-glow:   rgba(232, 162, 61, 0.18);
+
+$color-text-primary:   #181C22;
+$color-text-secondary: #5C6470;
+$color-text-tertiary:  #9298A2;
+
+$color-border:        #E5E1D8;
+$color-border-strong: #D3CDC0;
+
+$font-display: 'Fraunces', Georgia, serif;
+$font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+$radius-md: 10px;
+$radius-lg: 18px;
+
+$ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+
+main {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  font-family: $font-body;
+  background: $color-ink;
+  overflow: hidden;
+
+  // faint dot-grid texture
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(244, 242, 236, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+
+  // two soft drifting glows for depth/texture, amber + cool ink-blue
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(circle at 18% 22%, $color-amber-glow, transparent 38%),
+      radial-gradient(circle at 82% 78%, rgba(122, 155, 230, 0.14), transparent 42%);
+    animation: drift 18s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(3%, -2%) scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main::after {
+    animation: none;
+  }
+}
+
+// -------------------------------------------------------------------
+// Card — .form-container
+// Sits above the texture, entrance animation on mount
+// -------------------------------------------------------------------
+
+.form-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  background: $color-card;
+  border: 1px solid rgba($color-card, 0.06);
+  border-radius: $radius-lg;
+  padding: 2.75rem 2.25rem;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.04),
+    0 24px 48px -12px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(244, 242, 236, 0.04);
+  animation: card-in 620ms $ease-out-soft both;
+
+  h2 {
+    font-family: $font-display;
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: $color-text-primary;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.75rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 0.875rem;
+
+    // small amber accent rule under the heading — echoes the brand accent
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 3px;
+      border-radius: 2px;
+      background: $color-amber;
+    }
+  }
+
+  p {
+    margin: 1.75rem 0 0;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: $color-text-secondary;
+
+    a {
+      color: $color-amber-dark;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 160ms $ease-standard;
+
+      &:hover {
+        color: darken($color-amber-dark, 8%);
+        text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($color-amber, 0.28);
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-container {
+    animation: none;
+  }
+}
+
+// -------------------------------------------------------------------
+// Form fields — .input-group
+// Staggered entrance + focus micro-interaction
+// -------------------------------------------------------------------
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  animation: field-in 480ms $ease-out-soft both;
+
+  // stagger each input-group's entrance slightly after the card appears
+  &:nth-of-type(1) { animation-delay: 120ms; }
+  &:nth-of-type(2) { animation-delay: 180ms; }
+  &:nth-of-type(3) { animation-delay: 240ms; }
+
+  label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: $color-text-primary;
+  }
+
+  input {
+    width: 100%;
+    font-family: $font-body;
+    font-size: 0.9375rem;
+    color: $color-text-primary;
+    background: $color-card;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    padding: 0.75rem 1rem;
+    transition: border-color 160ms $ease-standard,
+                box-shadow 200ms $ease-standard,
+                transform 160ms $ease-standard;
+
+    &::placeholder {
+      color: $color-text-tertiary;
+    }
+
+    &:hover {
+      border-color: $color-border-strong;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-amber;
+      box-shadow: 0 0 0 4px rgba($color-amber, 0.16);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+@keyframes field-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input-group {
+    animation: none;
+  }
+  .input-group input:focus {
+    transform: none;
+  }
+}
+
+// -------------------------------------------------------------------
+// Buttons — .button.primary-button
+// -------------------------------------------------------------------
+
+.button {
+  position: relative;
+  font-family: $font-body;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border-radius: $radius-md;
+  padding: 0.8125rem 1.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  transition: background 160ms $ease-standard,
+              transform 120ms $ease-standard,
+              box-shadow 200ms $ease-standard;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba($color-amber, 0.28);
+  }
+}
+
+.primary-button {
+  background: $color-amber;
+  color: $color-ink;
+  font-weight: 600;
+
+  &:hover {
+    background: $color-amber-dark;
+    box-shadow: 0 8px 20px -6px rgba(232, 162, 61, 0.45);
+  }
+
+  // soft sheen sweep on hover for a touch of polish
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    transition: left 480ms $ease-standard;
+  }
+
+  &:hover::before {
+    left: 130%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary-button::before {
+    transition: none;
+    left: -60%;
+  }
+}
+
+// -------------------------------------------------------------------
+// Responsive
+// -------------------------------------------------------------------
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 2.25rem 1.5rem;
+  }
+
+  main::after {
+    inset: -30%;
+  }
+}

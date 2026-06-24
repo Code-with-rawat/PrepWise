@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="64" height="64" role="img">
+  <title>S Logo Icon</title>
+
+  <!-- Background circle (remove if you want transparent bg) -->
+  <rect width="240" height="240" fill="#111111" rx="16"/>
+
+  <g transform="translate(120,120)">
+
+    <!-- Outer diamond (white) with rounded corners -->
+    <path d="
+      M 0,-98
+      Q 10,-98 18,-90
+      L 88,-20
+      Q 98,-10 98,0
+      Q 98,10 88,20
+      L 18,90
+      Q 10,98 0,98
+      Q -10,98 -18,90
+      L -88,20
+      Q -98,10 -98,0
+      Q -98,-10 -88,-20
+      L -18,-90
+      Q -10,-98 0,-98 Z
+    " fill="white"/>
+
+    <!-- Black cutout top-right quadrant -->
+    <path d="M 20,-88 L 98,0 L 0,0 L 0,-98 Z" fill="#111111"/>
+
+    <!-- Black cutout bottom-left quadrant -->
+    <path d="M -20,88 L -98,0 L 0,0 L 0,98 Z" fill="#111111"/>
+
+    <!-- Inner small diamond (black hole) -->
+    <path d="
+      M 0,-36
+      Q 5,-36 9,-32
+      L 32,-9
+      Q 36,-5 36,0
+      Q 36,5 32,9
+      L 9,32
+      Q 5,36 0,36
+      Q -5,36 -9,32
+      L -32,9
+      Q -36,5 -36,0
+      Q -36,-5 -32,-9
+      L -9,-32
+      Q -5,-36 0,-36 Z
+    " fill="#111111"/>
+
+    <!-- S-curve white shape -->
+    <path d="
+      M 6,-64
+      Q 34,-62 48,-44
+      Q 60,-28 50,-10
+      Q 42,6 26,14
+      Q 10,20 4,36
+      Q -2,50 8,60
+      Q -18,56 -34,38
+      Q -46,22 -36,4
+      Q -28,-10 -12,-18
+      Q 4,-26 12,-42
+      Q 20,-58 6,-64 Z
+    " fill="white"/>
+
+  </g>
+</svg>
