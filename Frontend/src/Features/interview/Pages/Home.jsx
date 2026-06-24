@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useRef } from "react";
 import "../style/home.scss";
 import { useNavigate } from "react-router";
-import { useInterview } from "../hooks/useInterview";
+import { useInterview } from "../Hooks/useInterview";
 
 function Home() {
   const { loading, generateReport, reports } = useInterview();
