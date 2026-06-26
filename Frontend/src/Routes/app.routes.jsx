@@ -25,13 +25,6 @@ import Dashboard from "../Features/interview/Pages/Dashboard";
         element: <Protected>
             <Interview/>
         </Protected>
-    },
-
-    {
-        path : "/dashboard",
-        element: <Protected>
-            <Dashboard/>
-        </Protected>
     }
 
 
