@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllInterviewReports } from "../services/interview.api";
+import { getAllInterviewReports } from "../Services/interview.api.js";
 import { useNavigate } from "react-router";
 
 export default function Dashboard() {
