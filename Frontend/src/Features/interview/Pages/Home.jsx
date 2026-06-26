@@ -40,6 +40,79 @@ const [selectedFile, setSelectedFile] = useState(null)
   }
   return (
     <div className="home-page">
+    <div
+    onClick={() => navigate("/dashboard")}
+    style={{
+      position: "fixed",
+      left: "20px",
+      top: "50%",
+      transform: "translateY(-50%)",
+      zIndex: 1000,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "8px",
+      cursor: "pointer",
+    }}
+  >
+    <div
+      style={{
+        width: "48px",
+        height: "48px",
+        backgroundColor: "#1e293b",
+        border: "1px solid #2a3344",
+        borderRadius: "12px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "all 0.2s",
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.backgroundColor = "#3b82f6";
+        e.currentTarget.style.border = "1px solid #3b82f6";
+        e.currentTarget.nextSibling.style.opacity = "1";
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.backgroundColor = "#1e293b";
+        e.currentTarget.style.border = "1px solid #2a3344";
+        e.currentTarget.nextSibling.style.opacity = "0";
+      }}
+    >
+      {/* Dashboard Icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    </div>
+
+    {/* Tooltip */}
+    <span style={{
+      opacity: "0",
+      transition: "opacity 0.2s",
+      backgroundColor: "#1e293b",
+      color: "white",
+      fontSize: "0.7rem",
+      padding: "3px 8px",
+      borderRadius: "6px",
+      whiteSpace: "nowrap",
+      border: "1px solid #2a3344",
+      pointerEvents: "none"
+    }}>
+      My Reports
+    </span>
+  </div>
       <header className="page-header">
         <h1>
           Create Your Custom <span className="highlight">Interview Plan</span>
