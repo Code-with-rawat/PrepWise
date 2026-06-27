@@ -1,6 +1,7 @@
 import react from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useInterview } from "../Hooks/useInterview";
 
 export default function Dashboard () {
     const [showDashboard, setShowDashboard] = useState(false);
@@ -170,7 +171,7 @@ export default function Dashboard () {
                     key={report._id}
                     onClick={() => {
                       setShowDashboard(false);
-                      navigate(`/interview/${report._id}`);
+                      navigatxe(`/interview/${report._id}`);
                     }}
                     style={{
                       backgroundColor: "#1e293b",
