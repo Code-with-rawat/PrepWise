@@ -5,8 +5,17 @@ import { useInterview } from "../Hooks/useInterview";
 
 export default function Dashboard () {
     const [showDashboard, setShowDashboard] = useState(false);
-    const { loading, generateReport, reports } = useInterview();
+    const { loading, generateReport, reports, getReports } = useInterview();
     const navigate = useNavigate();
+
+
+      useEffect(() => {
+        if(showDashboard) {
+            getReports();
+        }
+    }, [showDashboard]);
+
+
     return (
           <>
         <div style={{
@@ -70,6 +79,7 @@ export default function Dashboard () {
           My Reports
         </span>
       </div>
+
     
       {showDashboard && (
         <div style={{
@@ -133,7 +143,13 @@ export default function Dashboard () {
               </button>
             </div>
 
-            {reports.length === 0 ? (
+
+
+            {loading ? (
+              <div style={{ textAlign: "center", color: "#94a3b8", marginTop: "8rem" }}>
+                <p>Loading reports...</p>
+              </div>
+            ) : reports.length === 0 ? (
               <div style={{
                 textAlign: "center",
                 marginTop: "8rem",
@@ -171,7 +187,7 @@ export default function Dashboard () {
                     key={report._id}
                     onClick={() => {
                       setShowDashboard(false);
-                      navigatxe(`/interview/${report._id}`);
+                      navigate(`/interview/${report._id}`);
                     }}
                     style={{
                       backgroundColor: "#1e293b",
