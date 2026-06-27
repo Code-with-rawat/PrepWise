@@ -3,7 +3,6 @@ import { useState, useRef } from "react";
 import "../Style/Home.scss";
 import { useNavigate } from "react-router";
 import { useInterview } from "../Hooks/useInterview";
-import Dashboard from "./Dashboard";
 
 function Home() {
   const { loading, generateReport, reports } = useInterview();
@@ -41,7 +40,6 @@ const [selectedFile, setSelectedFile] = useState(null)
   }
   return (
     <div className="home-page">
-    <Dashboard/>
       <header className="page-header">
         <h1>
           Create Your Custom <span className="highlight">Interview Plan</span>
