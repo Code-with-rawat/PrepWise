@@ -1,11 +1,11 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef , useEffect} from "react";
 import "../Style/Home.scss";
 import { useNavigate } from "react-router";
 import { useInterview } from "../Hooks/useInterview";
 
 function Home() {
-  const { loading, generateReport, reports } = useInterview();
+  const { loading, generateReport, reports, getReports } = useInterview();
   const [isDragOver, setIsDragOver] = useState(false)
 const [selectedFile, setSelectedFile] = useState(null)
   const [jobDescription, setJobDescription] = useState("");
@@ -30,6 +30,10 @@ const [selectedFile, setSelectedFile] = useState(null)
       alert("Failed to generate report. Please try again.");
     }
   };
+
+  useEffect(() => {
+    getReports();
+}, []);
 
   if (loading) {
     return (
