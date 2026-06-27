@@ -56,8 +56,7 @@ async function generateInterviewReporting(req, res) {
  * @desc get all interview reports of the user
  */
 async function getAllInterviewReportsController(req, res) {
-    const interviewReports = await interviewReportModel.find({ user: req.user.id }).sort({ createdAt: -1 }).select("-resume", "-selfDescription", "-jobDescription","-technicalQuestions", "-hrQuestions", "-behavioralQuestions", "-preparationPlan","-skillGaps")
-
+    const interviewReports = await interviewReportModel.find({ user: req.user.id }).sort({ createdAt: -1 }).select("-resume -selfDescription -jobDescription -technicalQuestions -hrQuestions -behavioralQuestions -preparationPlan -skillGaps")
     res.status(200).json({
         message: "Interview reports fetched successfully.",
         interviewReports
