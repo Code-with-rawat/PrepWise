@@ -24,7 +24,7 @@ const [selectedFile, setSelectedFile] = useState(null)
     navigate(`/interview/${data._id}`);
 
     if (data && data._id) {
-      navigate(`/interview/${data._id}`);
+      navigate(`/interview/${data._id}`); 
     } else {
       console.error("Data is null or missing _id", data);
       alert("Failed to generate report. Please try again.");
