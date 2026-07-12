@@ -1,8 +1,6 @@
-
-
 $color-ink:          #10151F;
-$color-ink-surface:  #161D2B;   // panel/card background, one step up from page bg
-$color-ink-raised:   #1C2433;   // nested boxes (textarea, dropzone) — one step up again
+$color-ink-surface:  #161D2B;   
+$color-ink-raised:   #1C2433;   
 $color-ink-border:   #2A3344;
 
 $color-card:         #FFFFFF;
@@ -18,6 +16,7 @@ $color-text-tertiary:   #6B7280;
 
 $color-success:  #7A9B76;
 $color-danger:   #D9695A;
+$color-info:     #7A9BD9;      
 
 $font-display: 'Fraunces', Georgia, serif;
 $font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -39,10 +38,9 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   background: $color-ink;
   font-family: $font-body;
   color: $color-text-primary;
-  padding: 3rem 1.5rem 4rem;
+  padding: 3rem 1.5rem 8rem; // extra bottom space for sticky CTA bar
   overflow: hidden;
 
-  // dot-grid texture, consistent with auth page
   &::before {
     content: '';
     position: fixed;
@@ -53,7 +51,6 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 0;
   }
 
-  // ambient drifting glow
   &::after {
     content: '';
     position: fixed;
@@ -82,7 +79,7 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 // -------------------------------------------------------------------
-// Loading screen (full-page state while generating)
+// Loading screen
 // -------------------------------------------------------------------
 
 .loading-screen {
@@ -112,7 +109,6 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     align-items: center;
     gap: 0.875rem;
 
-    // small spinning ring before the text
     &::before {
       content: '';
       width: 22px;
@@ -136,6 +132,59 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 // -------------------------------------------------------------------
+// Step indicator (NEW — "1. Add Details → 2. Generate Strategy")
+// -------------------------------------------------------------------
+
+.step-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 0 auto 1.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(244, 242, 236, 0.04);
+  border: 1px solid rgba(244, 242, 236, 0.07);
+  width: fit-content;
+}
+
+.step-indicator__item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(244, 242, 236, 0.3);
+
+  &.is-active {
+    color: $color-amber;
+
+    .step-indicator__dot {
+      background: $color-amber;
+      color: $color-ink;
+    }
+  }
+}
+
+.step-indicator__dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.625rem;
+  font-weight: 700;
+  background: rgba(244, 242, 236, 0.06);
+  color: rgba(244, 242, 236, 0.3);
+  border: 1px solid rgba(244, 242, 236, 0.1);
+}
+
+.step-indicator__arrow {
+  color: rgba(244, 242, 236, 0.2);
+  display: flex;
+}
+
+// -------------------------------------------------------------------
 // Page header
 // -------------------------------------------------------------------
 
@@ -154,7 +203,10 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     line-height: 1.2;
 
     .highlight {
-      color: $color-amber;
+      background: linear-gradient(130deg, $color-amber 10%, $color-amber-dark 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 
@@ -189,6 +241,7 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   animation: rise-in 620ms $ease-out-soft both;
   animation-delay: 80ms;
   overflow: hidden;
+  transition: border-color 220ms $ease-standard, box-shadow 220ms $ease-standard;
 }
 
 .interview-card__body {
@@ -213,8 +266,7 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 // -------------------------------------------------------------------
-// Panels (left = job description, right = profile)
-// Staggered entrance
+// Panels
 // -------------------------------------------------------------------
 
 .panel {
@@ -222,9 +274,15 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   animation: panel-in 520ms $ease-out-soft both;
+  transition: background 220ms $ease-standard;
 
   &--left  { animation-delay: 160ms; }
   &--right { animation-delay: 240ms; }
+
+  // focus-within state: highlights the whole panel when its field is active
+  &:focus-within {
+    background: rgba(232, 162, 61, 0.015);
+  }
 
   @media (max-width: 640px) {
     padding: 1.5rem 1.25rem;
@@ -257,6 +315,12 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     margin: 0;
     flex: 1;
   }
+}
+
+.panel__subtitle {
+  font-size: 0.75rem;
+  color: $color-text-tertiary;
+  margin: 0.125rem 0 0;
 }
 
 .panel__icon {
@@ -296,6 +360,53 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   color: $color-amber;
   border: 1px solid rgba(232, 162, 61, 0.3);
   margin-left: 0.625rem;
+}
+
+// -------------------------------------------------------------------
+// Profile tabs (NEW — replaces the "OR" divider with an explicit toggle
+// between "Upload Resume" and "Write About Yourself")
+// -------------------------------------------------------------------
+
+.profile-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: $color-ink-raised;
+  border: 1px solid $color-ink-border;
+  border-radius: $radius-md;
+  margin-bottom: 1.25rem;
+}
+
+.profile-tabs__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $color-text-tertiary;
+  font-family: $font-body;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 180ms $ease-standard, color 180ms $ease-standard;
+
+  &:hover {
+    color: $color-text-secondary;
+  }
+
+  &.is-active {
+    background: $color-amber-tint;
+    color: $color-amber;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(232, 162, 61, 0.28);
+  }
 }
 
 // -------------------------------------------------------------------
@@ -341,20 +452,31 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 
 .char-counter {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   font-size: 0.75rem;
   color: $color-text-tertiary;
   margin-top: 0.5rem;
   font-variant-numeric: tabular-nums;
   transition: color 200ms $ease-standard;
 
-  // state hooks for real-time feedback (see JSX note)
   &.is-near-limit {
     color: $color-amber;
   }
 
   &.is-at-limit {
     color: $color-danger;
+  }
+}
+
+.char-counter__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  color: $color-text-tertiary;
+
+  &.is-valid {
+    color: $color-success;
   }
 }
 
@@ -400,14 +522,12 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     transform: scale(0.99);
   }
 
-  // applied via JS/onDragOver — see JSX note
   &.is-dragover {
     border-color: $color-amber;
     background: $color-amber-tint;
     box-shadow: 0 0 0 4px rgba(232, 162, 61, 0.1);
   }
 
-  // applied once a file has been selected — dropzone becomes a file card
   &.has-file {
     border-style: solid;
     border-color: rgba(122, 155, 118, 0.4);
@@ -416,8 +536,6 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     padding: 1rem 1.25rem;
   }
 }
-
-// -- Idle prompt (icon + "click to upload" text) — shown while no file --
 
 .dropzone__prompt {
   display: flex;
@@ -470,7 +588,16 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   margin: 0;
 }
 
-// -- File card (shown once a file is selected) --
+.dropzone__browse {
+  font-size: 0.75rem;
+  color: $color-text-secondary;
+  background: rgba(244, 242, 236, 0.03);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(244, 242, 236, 0.06);
+  margin-top: 0.625rem;
+  display: inline-block;
+}
 
 .file-card {
   display: flex;
@@ -504,7 +631,6 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   background: rgba(122, 155, 118, 0.16);
   color: $color-success;
 
-  // success checkmark badge, pops in slightly after the card
   &::after {
     content: '';
     position: absolute;
@@ -535,7 +661,7 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 
 .file-card__info {
   flex: 1;
-  min-width: 0; // allow text-overflow ellipsis to work in a flex child
+  min-width: 0;
   text-align: left;
 }
 
@@ -580,36 +706,10 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
-
 // -------------------------------------------------------------------
-// OR divider
-// -------------------------------------------------------------------
-
-.or-divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 1.25rem 0;
-  color: $color-text-tertiary;
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: $color-ink-border;
-  }
-
-  span {
-    padding: 0 0.875rem;
-  }
-}
-
-// -------------------------------------------------------------------
-// Info box
+// Info box (kept as an optional secondary hint — no longer the sole
+// signal for the "one of these is required" rule, since .profile-tabs
+// now makes that obvious upfront)
 // -------------------------------------------------------------------
 
 .info-box {
@@ -642,29 +742,48 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 // -------------------------------------------------------------------
-// Card footer / CTA
+// Sticky CTA bar (NEW — replaces the in-card footer; stays reachable
+// at the bottom of the viewport regardless of scroll position)
 // -------------------------------------------------------------------
 
-.interview-card__footer {
+.sticky-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  padding: 1.25rem 1.5rem 1.75rem;
+  background: linear-gradient(to top, rgba(16, 21, 31, 1) 0%, rgba(16, 21, 31, 0.97) 70%, transparent 100%);
+  backdrop-filter: blur(16px);
+}
+
+.sticky-cta__inner {
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.25rem 2rem;
-  border-top: 1px solid $color-ink-border;
-  background: rgba(0, 0, 0, 0.12);
   flex-wrap: wrap;
 
   @media (max-width: 640px) {
-    padding: 1.25rem 1.25rem;
     flex-direction: column;
     align-items: stretch;
   }
 }
 
 .footer-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   font-size: 0.8125rem;
   color: $color-text-tertiary;
+
+  &__divider {
+    width: 1px;
+    height: 16px;
+    background: $color-ink-border;
+  }
 }
 
 .generate-btn {
@@ -708,7 +827,6 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 0 0 4px rgba(232, 162, 61, 0.3);
   }
 
-  // sheen sweep, consistent with auth page primary button
   &::before {
     content: '';
     position: absolute;
@@ -725,17 +843,22 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
     left: 130%;
   }
 
-  // disabled / loading state — toggle via JS (see JSX note)
   &:disabled,
   &.is-loading {
     cursor: not-allowed;
     opacity: 0.85;
     transform: none;
+    background: rgba(232, 162, 61, 0.15);
+    color: rgba(232, 162, 61, 0.35);
+    box-shadow: none;
 
     &:hover {
       box-shadow: none;
+      background: rgba(232, 162, 61, 0.15);
       svg { transform: none; }
     }
+
+    &::before { display: none; }
   }
 
   &.is-loading svg {
@@ -748,9 +871,61 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
+.sticky-cta__helper {
+  text-align: center;
+  font-size: 0.75rem;
+  color: $color-text-tertiary;
+  margin: 0.5rem 0 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .generate-btn::before { transition: none; }
   .generate-btn.is-loading svg { animation-duration: 1600ms; }
+}
+
+// -------------------------------------------------------------------
+// Progress ring (NEW — used for match score, on both the recent-plan
+// cards here and the result page)
+// -------------------------------------------------------------------
+
+.progress-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    transform: rotate(-90deg);
+  }
+
+  circle {
+    fill: none;
+  }
+
+  &__track {
+    stroke: rgba(244, 242, 236, 0.07);
+  }
+
+  &__value {
+    stroke-linecap: round;
+    transition: stroke-dashoffset 800ms $ease-out-soft;
+  }
+
+  &__label {
+    position: absolute;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &--high circle.progress-ring__value,
+  &--high .progress-ring__label { color: $color-success; stroke: $color-success; }
+
+  &--mid circle.progress-ring__value,
+  &--mid .progress-ring__label { color: $color-amber; stroke: $color-amber; }
+
+  &--low circle.progress-ring__value,
+  &--low .progress-ring__label { color: $color-danger; stroke: $color-danger; }
 }
 
 // -------------------------------------------------------------------
@@ -763,11 +938,29 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   animation: rise-in 560ms $ease-out-soft both;
   animation-delay: 320ms;
 
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
   h2 {
     font-family: $font-display;
     font-size: 1.25rem;
     font-weight: 500;
-    margin: 0 0 1.25rem;
+    margin: 0;
+  }
+
+  &__view-all {
+    background: none;
+    border: none;
+    font-size: 0.78rem;
+    color: $color-text-tertiary;
+    cursor: pointer;
+    transition: color 150ms $ease-standard;
+
+    &:hover { color: $color-amber; }
   }
 }
 
@@ -785,6 +978,7 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .report-item {
+  position: relative;
   background: $color-ink-surface;
   border: 1px solid $color-ink-border;
   border-radius: $radius-md;
@@ -794,10 +988,30 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
               transform 200ms $ease-standard,
               box-shadow 200ms $ease-standard;
 
-  &:hover {
+  &:hover,
+  &.is-hovered {
     border-color: rgba(232, 162, 61, 0.4);
     transform: translateY(-3px);
     box-shadow: 0 16px 32px -16px rgba(0, 0, 0, 0.5);
+
+    .report-item__actions {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.125rem;
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   h3 {
@@ -812,7 +1026,64 @@ $ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 .report-meta {
   font-size: 0.75rem;
   color: $color-text-tertiary;
-  margin: 0 0 0.625rem;
+  margin: 0;
+}
+
+// small "strong/partial/low match" pill, shown top-left on hover
+.report-item__match-pill {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 180ms $ease-standard;
+
+  .report-item.is-hovered &,
+  .report-item:hover & {
+    opacity: 1;
+  }
+
+  &--high { background: rgba(122, 155, 118, 0.14); color: $color-success; border: 1px solid rgba(122, 155, 118, 0.28); }
+  &--mid  { background: $color-amber-tint; color: $color-amber; border: 1px solid rgba(232, 162, 61, 0.28); }
+  &--low  { background: rgba(217, 105, 90, 0.14); color: #E89186; border: 1px solid rgba(217, 105, 90, 0.28); }
+}
+
+// hover-revealed quick actions: view / regenerate / delete
+.report-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 200ms $ease-standard, transform 200ms $ease-standard;
+}
+
+.report-item__action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $color-text-tertiary;
+  cursor: pointer;
+  transition: background 150ms $ease-standard, color 150ms $ease-standard;
+
+  &--view:hover    { color: $color-amber; background: $color-amber-tint; }
+  &--regen:hover   { color: $color-info; background: rgba(122, 155, 217, 0.1); }
+  &--delete:hover  { color: #E89186; background: rgba(217, 105, 90, 0.1); }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(232, 162, 61, 0.28);
+  }
 }
 
 .match-score {
