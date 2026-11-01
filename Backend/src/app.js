@@ -23,6 +23,17 @@ app.use(
   })
 );
 
+//Use for Testing the Backend
+
+app.use('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Backend deploy suucessfully",
+    environment: process.env.NODE_ENV
+
+  });
+});
+
 app.use(express.json());
 app.use(cookieParser());
 //  Use auth routes for all /api/auth endpoints 
