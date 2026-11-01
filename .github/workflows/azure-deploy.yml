@@ -1,0 +1,75 @@
+
+name: PrepWise Azure Backend Deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Backend/**'
+      - '.github/workflows/azure-deploy.yml'
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and Deploy Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # 3. Install production dependencies
+      - name: Install Backend Dependencies
+        working-directory: Backend
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --omit=dev
+          else
+            npm install --omit=dev
+          fi
+
+      # 4. Create deployment ZIP
+      - name: Create Backend Deployment Package
+        run: |
+          cd Backend
+          zip -r "$GITHUB_WORKSPACE/Backend.zip" . \
+            -x ".env" ".env.*" ".git/*"
+
+      # 5. Azure OIDC Authentication
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      # 6. Deploy to Azure App Service
+      - name: Deploy Backend to Azure
+        run: |
+          az webapp deploy \
+            --resource-group PrepWise \
+            --name PrepWise \
+            --src-path "$GITHUB_WORKSPACE/Backend.zip" \
+            --type zip
+
+      # 7. Verify deployment target
+      - name: Verify Azure Web App
+        run: |
+          az webapp show \
+            --resource-group PrepWise \
+            --name PrepWise \
+            --query "{name:name,state:state,host:defaultHostName}" \
+            --output table
