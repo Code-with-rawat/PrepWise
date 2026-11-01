@@ -7,7 +7,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://prepwise-ai-zjlx.onrender.com",
+  "https://gray-coast-0e6d38800.5.azurestaticapps.net"
 ];
 
 app.use(
@@ -25,12 +25,11 @@ app.use(
 
 //Use for Testing the Backend
 
-app.use('/', (req, res) => {
+app.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Backend deploy suucessfully",
+    message: "Backend deploy successfully",
     environment: process.env.NODE_ENV
-
   });
 });
 
